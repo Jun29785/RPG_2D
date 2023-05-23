@@ -3,8 +3,8 @@ using UnityEngine;
 public class MoveTest : MonoBehaviour
 {
     public SpriteRenderer field;
-    float field_width;
-    float field_height;
+    public float field_width;
+    public float field_height;
 
     public Vector2 field_Left;
     public Vector2 field_Right;
@@ -26,20 +26,33 @@ public class MoveTest : MonoBehaviour
 
     public float speed = 2.5f;
     public bool IsMove;
+    public float maxMoveWaitDuration;
+    public float curMoveWaitDelay;
 
     public Vector2 TestVector;
     public float temp;
     void Start()
     {
+        curMoveWaitDelay = 0f;
         field_width = field.sprite.bounds.size.x * field.transform.lossyScale.x;
         field_height = field.sprite.bounds.size.y * field.transform.lossyScale.y;
+        SetBorderValue();
     }
 
     void Update()
     {
-        if (IsMove)
+        if (MapRangeCheck()) return;
+        curMoveWaitDelay += Time.deltaTime;
+        if (curMoveWaitDelay < maxMoveWaitDuration && IsMove)
         {
             transform.Translate(DirectionVector * speed * Time.deltaTime);
+        }
+        else 
+        {
+            IsMove = false;
+            curMoveWaitDelay = 0f;
+            DirectionVector = -DirectionVector;
+            IsMove = true;
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -51,19 +64,33 @@ public class MoveTest : MonoBehaviour
         }
     }
 
+    bool MapRangeCheck()
+    {
+        var x = transform.position.x;
+        var y = transform.position.y;
+        if (x > field_Right.x || x < field_Left.x || y > field_Up.y || y < field_Down.y)
+        {
+            Debug.Log($"x: {x} y: {y}");
+            return true;
+        }
+        return false;
+    }
+
    void RandomMove()
     {
         SetBorderValue();
         AllocDistance2Weight();
         SetWeight(ref weight_Left, ref weight_Right);
         SetWeight(ref weight_Up, ref weight_Down);
-        //SelectDirW(ref X_DirW, new DirectionW(field_Left, weight_Left), new DirectionW(field_Right, weight_Right));
-        //SelectDirW(ref Y_DirW, new DirectionW(field_Up, weight_Up), new DirectionW(field_Down, weight_Down));
-        SelectDirW(ref X_DirW, new DirectionW(Vector2.left, weight_Left), new DirectionW(Vector2.right, weight_Right));
-        SelectDirW(ref Y_DirW, new DirectionW(Vector2.up, weight_Up), new DirectionW(Vector2.down, weight_Down));
-        Vector2 temp = Vector2.Perpendicular(X_DirW.direction - Y_DirW.direction);
-        temp = X_DirW.direction.x + Y_DirW.direction.y == 0 ? temp * -1 : temp;
-        vectorcircle.localPosition = temp;
+        SelectDirW(ref X_DirW, new DirectionW(field_Left, weight_Left), new DirectionW(field_Right, weight_Right));
+        SelectDirW(ref Y_DirW, new DirectionW(field_Up, weight_Up), new DirectionW(field_Down, weight_Down));
+        //SelectDirW(ref X_DirW, new DirectionW(Vector2.left, weight_Left), new DirectionW(Vector2.right, weight_Right));
+        //SelectDirW(ref Y_DirW, new DirectionW(Vector2.up, weight_Up), new DirectionW(Vector2.down, weight_Down));
+        Vector2 temp = X_DirW.direction - Y_DirW.direction;
+        temp = Vector2.Perpendicular(temp);
+        temp = X_DirW.direction.x + Y_DirW.direction.y == 0 ? temp * -1: temp;
+        //Debug.Log($"{temp}");
+        vectorcircle.localPosition = (temp.normalized);
         DirectionVector = (vectorcircle.position - transform.position).normalized;
     }
 
@@ -131,7 +158,7 @@ public class DirectionW
 
     public DirectionW(Vector2 direction,float weight)
     {
-        this.direction = direction;
+        this.direction = direction*weight;
         this.weight = weight;
     }
 }
