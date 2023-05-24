@@ -3,8 +3,8 @@ using UnityEngine;
 public class MoveTest : MonoBehaviour
 {
     public SpriteRenderer field;
-    public float field_width;
-    public float field_height;
+    float field_width;
+    float field_height;
 
     public Vector2 field_Left;
     public Vector2 field_Right;
@@ -21,8 +21,12 @@ public class MoveTest : MonoBehaviour
 
     public Vector2 DirectionVector = Vector2.zero;
 
+    public Transform perpendicularTransform;
     [Header("Test")]
-    public Transform vectorcircle;
+    public LineRenderer x_line;
+    public LineRenderer y_line;
+    public LineRenderer vector_line;
+    public LineRenderer perpendicular_line;
 
     public float speed = 2.5f;
     public bool IsMove;
@@ -41,7 +45,7 @@ public class MoveTest : MonoBehaviour
 
     void Update()
     {
-        if (MapRangeCheck()) return;
+        //if (MapRangeCheck()) return;
         curMoveWaitDelay += Time.deltaTime;
         if (curMoveWaitDelay < maxMoveWaitDuration && IsMove)
         {
@@ -51,7 +55,7 @@ public class MoveTest : MonoBehaviour
         {
             IsMove = false;
             curMoveWaitDelay = 0f;
-            DirectionVector = -DirectionVector;
+            RandomMove();
             IsMove = true;
         }
         if (Input.GetKeyDown(KeyCode.Space))
@@ -82,16 +86,19 @@ public class MoveTest : MonoBehaviour
         AllocDistance2Weight();
         SetWeight(ref weight_Left, ref weight_Right);
         SetWeight(ref weight_Up, ref weight_Down);
-        SelectDirW(ref X_DirW, new DirectionW(field_Left, weight_Left), new DirectionW(field_Right, weight_Right));
-        SelectDirW(ref Y_DirW, new DirectionW(field_Up, weight_Up), new DirectionW(field_Down, weight_Down));
+        X_DirW = SelectDirW(new DirectionW(field_Left, weight_Left), new DirectionW(field_Right, weight_Right));
+        Y_DirW = SelectDirW(new DirectionW(field_Up, weight_Up), new DirectionW(field_Down, weight_Down));
         //SelectDirW(ref X_DirW, new DirectionW(Vector2.left, weight_Left), new DirectionW(Vector2.right, weight_Right));
         //SelectDirW(ref Y_DirW, new DirectionW(Vector2.up, weight_Up), new DirectionW(Vector2.down, weight_Down));
-        Vector2 temp = X_DirW.direction - Y_DirW.direction;
-        temp = Vector2.Perpendicular(temp);
-        temp = X_DirW.direction.x + Y_DirW.direction.y == 0 ? temp * -1: temp;
-        //Debug.Log($"{temp}");
-        vectorcircle.localPosition = (temp.normalized);
-        DirectionVector = (vectorcircle.position - transform.position).normalized;
+        DirectionVector = GetDirection().normalized;
+        x_line.SetPosition(0, field_Left);
+        x_line.SetPosition(1, field_Right);
+        y_line.SetPosition(0, field_Up);
+        y_line.SetPosition(1, field_Down);
+        vector_line.SetPosition(0, X_DirW.direction);
+        vector_line.SetPosition(1, Y_DirW.direction);
+        perpendicular_line.SetPosition(0, transform.position);
+        perpendicular_line.SetPosition(1, perpendicularTransform.position);
     }
 
     void SetBorderValue()
@@ -117,14 +124,27 @@ public class MoveTest : MonoBehaviour
         arg2 = Mathf.Round(arg2 / sum * 100f) / 100f;
     }
 
-    void SelectDirW(ref DirectionW SeldirW, DirectionW arg1, DirectionW arg2)
+    DirectionW SelectDirW(DirectionW arg1, DirectionW arg2)
     {
         if (Random.Range(0f, 1f) > arg1.weight)
         {
-            SeldirW = arg2;
+            return arg2;
         }
-        else SeldirW = arg1;
+        else return arg1;
     }
+
+    Vector2 GetDirection()
+    {
+        Vector2 c_Vector = X_DirW.direction - Y_DirW.direction;
+        float x_Length = X_DirW.direction.x - transform.position.x;
+        float y_Length = Y_DirW.direction.y - transform.position.y;
+        float scala = Mathf.Pow(y_Length, 2) / Mathf.Pow(c_Vector.magnitude, 2);
+        Vector3 perpendicularPoint = new Vector2(x_Length * scala, y_Length * (1 - scala));
+        perpendicularTransform.localPosition = perpendicularPoint;
+        return perpendicularTransform.position - transform.position;
+    }
+
+
 
     //Vector2 CrossCheck(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
     //{
@@ -158,7 +178,7 @@ public class DirectionW
 
     public DirectionW(Vector2 direction,float weight)
     {
-        this.direction = direction*weight;
+        this.direction = direction;
         this.weight = weight;
     }
 }
