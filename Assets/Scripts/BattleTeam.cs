@@ -1,9 +1,14 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using Define;
+using UnityEngine.Events;
 
-public class MoveTest : MonoBehaviour
+public class BattleTeam : MonoBehaviour
 {
-    public SpriteRenderer field;
+    #region Field
+    [Header("Field")]
+    [SerializeField] private SpriteRenderer field;
     float field_width;
     float field_height;
 
@@ -11,49 +16,67 @@ public class MoveTest : MonoBehaviour
     Vector2 field_Right;
     Vector2 field_Up;
     Vector2 field_Down;
-
+    #endregion
+    #region Weight
     float weight_Left;
     float weight_Right;
     float weight_Up;
     float weight_Down;
-
+    #endregion
+    #region Direction
     DirectionW X_DirW = new DirectionW();
     DirectionW Y_DirW = new DirectionW();
 
     Vector2 DirectionVector = Vector2.zero;
-
     public Transform perpendicularTransform;
-    [Header("Test")]
+    #endregion
+    #region Team Unit
+    [Header("Team Unit")]
+    [SerializeField] private List<Unit> Units = new List<Unit>();
+    [SerializeField] private TeamState state;
+    UnityEvent changeState;
+    #endregion
+    
+
+    #region Test
+    [Header("Visual Test")]
+    public bool VisualTesting = false;
     [SerializeField] private LineRenderer x_line;
     [SerializeField] private LineRenderer vector_line;
     [SerializeField] private LineRenderer y_line;
     [SerializeField] private LineRenderer perpendicular_line;
+    #endregion
 
     [SerializeField] private WaitForSeconds waitSetDirection = new WaitForSeconds(1.7f);
 
-    public float speed = 2.5f;
-    public bool IsMove;
-    public float maxMoveWaitDuration;
-    public float curMoveWaitDelay;
+    [SerializeField] private float speed = 2.5f;
+    [SerializeField] private bool IsMove;
+    [SerializeField] private float maxMoveWaitDuration;
+    [SerializeField] private float curMoveWaitDelay;
 
-    public Vector2 TestVector;
-    public float temp;
     void Start()
     {
         curMoveWaitDelay = 0f;
         field_width = field.sprite.bounds.size.x * field.transform.lossyScale.x;
         field_height = field.sprite.bounds.size.y * field.transform.lossyScale.y;
         SetBorderValue();
+        changeState.AddListener(CheckUnitState);
     }
 
     void Update()
     {
+        TeamMove();
+    }
+    #region Move Method
+    void TeamMove()
+    {
+        if (state == TeamState.Wait) return;
         curMoveWaitDelay += Time.deltaTime;
         if (curMoveWaitDelay < maxMoveWaitDuration && IsMove)
         {
             transform.Translate(DirectionVector * speed * Time.deltaTime);
         }
-        else 
+        else
         {
             IsMove = false;
             curMoveWaitDelay = 0f;
@@ -73,6 +96,7 @@ public class MoveTest : MonoBehaviour
         X_DirW = SelectDirW(new DirectionW(field_Left, weight_Left), new DirectionW(field_Right, weight_Right));
         Y_DirW = SelectDirW(new DirectionW(field_Up, weight_Up), new DirectionW(field_Down, weight_Down));
         DirectionVector = GetDirection().normalized;
+        if (VisualTesting) TestCode();
     }
 
     void SetBorderValue()
@@ -122,6 +146,17 @@ public class MoveTest : MonoBehaviour
         Vector3 perpendicularPoint = new Vector2(x_Length * scala, y_Length * (1 - scala));
         perpendicularTransform.localPosition = perpendicularPoint;
         return perpendicularTransform.position - pos;
+    }
+    #endregion
+
+    void CheckUnitState()
+    {
+        state = TeamState.Move;
+        foreach (Unit unit in Units)
+        {
+            if (unit.state == UnitState.Individual)
+                state = TeamState.Wait;
+        }
     }
 
     void TestCode()
