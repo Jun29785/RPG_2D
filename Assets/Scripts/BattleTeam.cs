@@ -32,11 +32,11 @@ public class BattleTeam : MonoBehaviour
     #endregion
     #region Team Unit
     [Header("Team Unit")]
-    [SerializeField] private List<Unit> Units = new List<Unit>();
+    [SerializeField] private List<UnitBase> Units = new List<UnitBase>();
     [SerializeField] private TeamState state;
-    UnityEvent changeState;
+    public UnityEvent changeState;
     #endregion
-    
+            
 
     #region Test
     [Header("Visual Test")]
@@ -61,15 +61,18 @@ public class BattleTeam : MonoBehaviour
         field_height = field.sprite.bounds.size.y * field.transform.lossyScale.y;
         SetBorderValue();
         changeState.AddListener(CheckUnitState);
+        changeState.Invoke();
     }
 
     void Update()
     {
         TeamMove();
     }
+
     #region Move Method
     void TeamMove()
     {
+        changeState.Invoke();
         if (state == TeamState.Wait) return;
         curMoveWaitDelay += Time.deltaTime;
         if (curMoveWaitDelay < maxMoveWaitDuration && IsMove)
@@ -152,7 +155,7 @@ public class BattleTeam : MonoBehaviour
     void CheckUnitState()
     {
         state = TeamState.Move;
-        foreach (Unit unit in Units)
+        foreach (UnitBase unit in Units)
         {
             if (unit.state == UnitState.Individual)
                 state = TeamState.Wait;
