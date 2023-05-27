@@ -32,7 +32,10 @@ public class BattleTeam : MonoBehaviour
     #endregion
     #region Team Unit
     [Header("Team Unit")]
-    [SerializeField] private List<UnitBase> Units = new List<UnitBase>();
+    private List<Transform> basicLocations = new List<Transform>();
+    private List<UnitBase> Units = new List<UnitBase>();
+    [SerializeField] private Transform unitParent;
+    [SerializeField] private Transform basicLocationParent;
     [SerializeField] private TeamState state;
     public UnityEvent changeState;
     #endregion
@@ -56,6 +59,7 @@ public class BattleTeam : MonoBehaviour
 
     void Start()
     {
+        InitializeUnits();
         curMoveWaitDelay = 0f;
         field_width = field.sprite.bounds.size.x * field.transform.lossyScale.x;
         field_height = field.sprite.bounds.size.y * field.transform.lossyScale.y;
@@ -67,6 +71,39 @@ public class BattleTeam : MonoBehaviour
     void Update()
     {
         TeamMove();
+    }
+
+    void InitializeUnits()
+    {
+        foreach (Transform unit in unitParent)
+            Units.Add(unit.GetComponent<UnitBase>());
+        foreach (Transform location in basicLocationParent)
+            basicLocations.Add(location);
+        switch (Units.Count)
+        {
+            case 1:
+                basicLocations[0].position = Vector3.zero;
+                Units[0].basicLocation = basicLocations[0];
+                break;
+            case 2:
+                basicLocations[0].position = new Vector2(-(Mathf.Sqrt(3)/3),0);
+                basicLocations[1].position = new Vector2(Mathf.Sqrt(3)/3,0);
+                Units[0].basicLocation = basicLocations[0];
+                Units[1].basicLocation = basicLocations[1];
+                break;
+            case 3:
+                basicLocations[0].position = Vector2.up;
+                basicLocations[1].position = new Vector2(-(Mathf.Sqrt(3) / 3), -(1/2));
+                basicLocations[2].position = new Vector2(Mathf.Sqrt(3) / 3, -(1/2));
+                Units[0].basicLocation = basicLocations[0];
+                Units[1].basicLocation  = basicLocations[1];
+                Units[2].basicLocation = basicLocations[2];
+                break;
+            default:
+                break;
+        }
+        foreach (UnitBase unit in Units)
+            unit.transform.localPosition = unit.basicLocation.localPosition;
     }
 
     #region Move Method

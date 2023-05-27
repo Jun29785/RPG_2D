@@ -13,10 +13,13 @@ public class UnitBase : MonoBehaviour
     [SerializeField] protected bool isReturning = false;
     [SerializeField] protected float moveSpeed = 3f;
 
-    [Header("Battle")]
+    [Header("Target Enemy")]
     [SerializeField] protected float enemyDetectionRadius = 5f;
     [SerializeField] private int enemyLayer;
     [SerializeField] protected Transform targetEnemy;
+
+    [Header("Battle")]
+    [SerializeField] protected float AttackRange = 1.5f;
 
     void Start()
     {
@@ -28,6 +31,10 @@ public class UnitBase : MonoBehaviour
         if (isReturning)
             ReturnTeamMove();
         if (targetEnemy == null) targetEnemy = EnemyDetector();
+        else // Move To Target
+        {
+            MoveToTarget();
+        }
     }
 
     protected virtual void ReturnTeamMove()
@@ -55,6 +62,15 @@ public class UnitBase : MonoBehaviour
         }
     }
 
+    protected virtual void MoveToTarget()
+    {
+        Vector2 direction = (targetEnemy.position - transform.position).normalized;
+        if (Vector2.Distance(targetEnemy.position,transform.position) > AttackRange)
+        {
+            transform.Translate(direction * moveSpeed * Time.deltaTime);
+        }
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -72,7 +88,6 @@ public class UnitBase : MonoBehaviour
         else
         {
             isReturning = false;
-            Debug.Log($"{enemies.Length}");
             state = UnitState.Individual;
             return GetClosetTarget(enemies);
         }
