@@ -82,19 +82,19 @@ public class BattleTeam : MonoBehaviour
         switch (Units.Count)
         {
             case 1:
-                basicLocations[0].position = Vector3.zero;
+                basicLocations[0].localPosition = Vector3.zero;
                 Units[0].basicLocation = basicLocations[0];
                 break;
             case 2:
-                basicLocations[0].position = new Vector2(-(Mathf.Sqrt(3)/3),0);
-                basicLocations[1].position = new Vector2(Mathf.Sqrt(3)/3,0);
+                basicLocations[0].localPosition = new Vector2(-(Mathf.Sqrt(3)/3),0);
+                basicLocations[1].localPosition = new Vector2(Mathf.Sqrt(3)/3,0);
                 Units[0].basicLocation = basicLocations[0];
                 Units[1].basicLocation = basicLocations[1];
                 break;
             case 3:
-                basicLocations[0].position = Vector2.up;
-                basicLocations[1].position = new Vector2(-(Mathf.Sqrt(3) / 3), -(1/2));
-                basicLocations[2].position = new Vector2(Mathf.Sqrt(3) / 3, -(1/2));
+                basicLocations[0].localPosition = Vector2.up;
+                basicLocations[1].localPosition = new Vector2(-(Mathf.Sqrt(3) / 3), -(1/2));
+                basicLocations[2].localPosition = new Vector2(Mathf.Sqrt(3) / 3, -(1/2));
                 Units[0].basicLocation = basicLocations[0];
                 Units[1].basicLocation  = basicLocations[1];
                 Units[2].basicLocation = basicLocations[2];
