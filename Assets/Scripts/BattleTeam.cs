@@ -50,7 +50,7 @@ public class BattleTeam : MonoBehaviour
     [SerializeField] private LineRenderer perpendicular_line;
     #endregion
 
-    [SerializeField] private WaitForSeconds waitSetDirection = new WaitForSeconds(1.7f);
+    [SerializeField] private WaitForSeconds waitSetDirection = new WaitForSeconds(0.07f);
 
     [SerializeField] private float speed = 2.5f;
     [SerializeField] private bool IsMove;
@@ -135,7 +135,9 @@ public class BattleTeam : MonoBehaviour
         SetWeight(ref weight_Up, ref weight_Down);
         X_DirW = SelectDirW(new DirectionW(field_Left, weight_Left), new DirectionW(field_Right, weight_Right));
         Y_DirW = SelectDirW(new DirectionW(field_Up, weight_Up), new DirectionW(field_Down, weight_Down));
-        DirectionVector = GetDirection().normalized;
+        DirectionVector = GetDirection();
+        maxMoveWaitDuration = DirectionVector.magnitude / speed;
+        DirectionVector = DirectionVector.normalized;
         if (VisualTesting) TestCode();
     }
 
