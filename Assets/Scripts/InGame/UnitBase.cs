@@ -91,25 +91,7 @@ public class UnitBase : MonoBehaviour
         {
             isReturning = false;
             state = UnitState.Individual;
-            return GetClosetTarget(enemies);
+            return InGameManager.Instance.GetClosetTarget(enemies);
         }
-    }
-
-    Transform GetClosetTarget(Collider2D[] colliders)
-    {
-        float closetDis = float.PositiveInfinity;
-        Transform ClosetTarget = null;
-        foreach (Collider2D collider in colliders)
-        {
-            if (collider == null) continue;
-            Vector3 offset = transform.position - collider.transform.position;
-
-            if (offset.sqrMagnitude < closetDis)
-            {
-                ClosetTarget = collider.transform;
-                closetDis = offset.sqrMagnitude;
-            }
-        }
-        return ClosetTarget;
     }
 }
