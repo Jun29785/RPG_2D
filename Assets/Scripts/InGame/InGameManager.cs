@@ -21,14 +21,14 @@ public class InGameManager : MonoBehaviour
 
     }
 
-    public Transform GetClosetTarget(Collider2D[] colliders)
+    public Transform GetClosetTarget(Collider2D[] colliders,Transform obj)
     {
         float closetDis = float.PositiveInfinity;
         Transform ClosetTarget = null;
         foreach (Collider2D collider in colliders)
         {
             if (collider == null) continue;
-            Vector3 offset = transform.position - collider.transform.position;
+            Vector3 offset = obj.transform.position - collider.transform.position;
 
             if (offset.sqrMagnitude < closetDis)
             {

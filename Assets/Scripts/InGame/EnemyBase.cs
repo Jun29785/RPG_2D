@@ -9,9 +9,8 @@ public class EnemyBase : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float speed = 0.7f;
-    private Transform targetUnit;
-    private Vector2 direction;
-    private bool isMove;
+    [SerializeField] private Transform targetUnit;
+    [SerializeField] private int unitLayer;
 
     [Header("Stat")]
     [SerializeField] [Range(0, 100000)] private int hp;
@@ -23,13 +22,16 @@ public class EnemyBase : MonoBehaviour
 
     void Start()
     {
-
+        unitLayer = LayerMask.NameToLayer("Unit");
     }
 
     void Update()
     {
         if (targetUnit == null) targetUnit = UnitDetector();
-        if (isMove) Movement();
+        else
+        {
+            MoveToTarget();
+        }
     }
 
     private void OnDrawGizmos()
@@ -40,40 +42,27 @@ public class EnemyBase : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 
-    void Movement()
+    protected virtual void MoveToTarget()
     {
-        if (Vector2.Distance(transform.position, targetUnit.position) <= attackRange)
+        Vector2 direction = (targetUnit.position - transform.position).normalized;
+        if (Vector2.Distance(targetUnit.position, transform.position) > attackRange)
         {
-            // 이동 중지
-            isMove = false;
-        }
-        else
-        {
-            float distance = speed * Time.deltaTime;
-
-            if (Vector2.Distance(transform.position, targetUnit.position) < distance)
-            {
-                distance = Vector2.Distance(transform.position, targetUnit.position);
-            }
-
-            transform.Translate(direction * distance, Space.World);
+            transform.Translate(direction * speed * Time.deltaTime);
         }
     }
 
     Transform UnitDetector()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, detectUnitRange);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, detectUnitRange, 1 << unitLayer);
         if (colliders.Length == 0)
         {
             return null;
         }
         else
         {
-            return InGameManager.Instance.GetClosetTarget(colliders);
+            return InGameManager.Instance.GetClosetTarget(colliders,transform);
         }
     }
-
-
 
     public void SetPool(IObjectPool<EnemyBase> pool)
     {

@@ -91,7 +91,7 @@ public class UnitBase : MonoBehaviour
         {
             isReturning = false;
             state = UnitState.Individual;
-            return InGameManager.Instance.GetClosetTarget(enemies);
+            return InGameManager.Instance.GetClosetTarget(enemies,transform);
         }
     }
 }
