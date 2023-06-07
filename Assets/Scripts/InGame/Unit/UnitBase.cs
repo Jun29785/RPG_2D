@@ -18,9 +18,17 @@ public class UnitBase : MonoBehaviour
     [SerializeField] private int enemyLayer;
     [SerializeField] protected Transform targetEnemy;
 
-    [Header("Battle")]
-    [SerializeField] protected float AttackRange = 1.5f;
+    [Header("Unit Stat")]
+    public int hp;
+    public int damage;
 
+    [Header("Battle")]
+    [SerializeField] protected GameObject basicAttackPrefab;
+    [SerializeField] protected bool isBattle;
+    protected float attackRange = 1.5f;
+    [SerializeField]protected float curAttackDelay = 0f;
+    [SerializeField] protected float maxAttackDuration = 0.7f;
+    
     void Start()
     {
         enemyLayer = LayerMask.NameToLayer("Enemy");
@@ -30,10 +38,23 @@ public class UnitBase : MonoBehaviour
     {
         if (isReturning)
             ReturnTeamMove();
-        if (targetEnemy == null) targetEnemy = EnemyDetector();
+        if (targetEnemy == null)
+        {
+            isBattle = false;
+            targetEnemy = EnemyDetector();
+        }
         else // Move To Target
         {
             MoveToTarget();
+        }
+        if (isBattle)
+        {
+            curAttackDelay += Time.deltaTime;
+            if (curAttackDelay > maxAttackDuration)
+            {
+                curAttackDelay = 0f;
+                AttackFunc();
+            }
         }
     }
 
@@ -65,10 +86,19 @@ public class UnitBase : MonoBehaviour
     protected virtual void MoveToTarget()
     {
         Vector2 direction = (targetEnemy.position - transform.position).normalized;
-        if (Vector2.Distance(targetEnemy.position,transform.position) > AttackRange)
+        if (Vector2.Distance(targetEnemy.position,transform.position) > attackRange)
         {
             transform.Translate(direction * moveSpeed * Time.deltaTime);
         }
+        else
+        {
+            isBattle = true;
+        }
+    }
+
+    protected virtual void AttackFunc()
+    {
+        UnitManager.Instance.UnitBasicAttack(basicAttackPrefab, transform, targetEnemy, 0, damage, maxAttackDuration);
     }
 
     private void OnDrawGizmos()
@@ -76,7 +106,7 @@ public class UnitBase : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, enemyDetectionRadius);
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, AttackRange);
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 
     Transform EnemyDetector()
