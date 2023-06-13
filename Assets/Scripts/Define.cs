@@ -12,4 +12,8 @@ namespace Define
         Move
     }
 
+    public enum GameEffect
+    {
+        None,
+    }
 }

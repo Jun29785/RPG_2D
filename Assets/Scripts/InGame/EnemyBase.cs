@@ -1,7 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.Events;
+using Define;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -20,9 +21,13 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] private float maxAttackDuration = 0.7f;
     private float curAttackDelay = 0f;
 
+    [Header("Game")]
+    public UnityEvent<int,List<GameEffect>> getDamage; 
+
     void Start()
     {
         unitLayer = LayerMask.NameToLayer("Unit");
+        getDamage.AddListener(GetDamage);
     }
 
     void Update()
@@ -67,5 +72,11 @@ public class EnemyBase : MonoBehaviour
     public void SetPool(IObjectPool<EnemyBase> pool)
     {
         enemypool = pool;
+    }
+
+    private void GetDamage(int damage, List<GameEffect> gameEffect)
+    {
+        hp -= damage;
+
     }
 }

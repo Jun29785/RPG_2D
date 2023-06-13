@@ -98,7 +98,7 @@ public class UnitBase : MonoBehaviour
 
     protected virtual void AttackFunc()
     {
-        UnitManager.Instance.UnitBasicAttack(basicAttackPrefab, transform, targetEnemy, 0, damage, maxAttackDuration);
+        UnitManager.Instance.UnitBasicAttack(basicAttackPrefab, transform, targetEnemy, 0, damage, maxAttackDuration/2);
     }
 
     private void OnDrawGizmos()
