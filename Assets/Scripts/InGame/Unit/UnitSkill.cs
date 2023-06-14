@@ -3,20 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class UnitSkill : MonoBehaviour
+public abstract class UnitSkill : MonoBehaviour
 {
     [Header("Skill Stat")]
     public int level;
     public int damage;
-    public float curCoolDownDelay;
-    public float maxCoolDownDuration;
+    private float curCoolDownDelay;
+    [SerializeField] private float maxCoolDownDuration;
+    public bool canUse;
 
-    public IEnumerator SkillFunction(UnitBase unit)
+    public UnityEvent useSkill;
+
+    protected UnitBase unit;
+
+    protected virtual void Start()
     {
-        unit.useSkill = true;
-        
-        yield return new WaitForEndOfFrame();
-
-        unit.useSkill = false;
+        useSkill.AddListener(SkillUsed);
+        unit = GetComponentInParent<UnitBase>();
     }
+
+    protected virtual void Update()
+    {
+        curCoolDownDelay += Time.deltaTime;
+        if (curCoolDownDelay >= maxCoolDownDuration)
+        {
+            canUse = true;
+        }
+    }
+
+    void SkillUsed()
+    {
+        canUse = false;
+        curCoolDownDelay = 0f;
+        StartCoroutine(SkillFunction());
+    }
+
+    protected abstract IEnumerator SkillFunction();
 }

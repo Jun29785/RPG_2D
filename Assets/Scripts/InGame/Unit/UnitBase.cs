@@ -15,8 +15,8 @@ public abstract class UnitBase : MonoBehaviour
 
     [Header("Target Enemy")]
     [SerializeField] protected float enemyDetectionRadius = 5f;
-    [SerializeField] private int enemyLayer;
-    [SerializeField] protected Transform targetEnemy;
+    private int enemyLayer;
+    public Transform targetEnemy;
 
     [Header("Unit Stat")]
     public int hp;
@@ -31,9 +31,9 @@ public abstract class UnitBase : MonoBehaviour
     [SerializeField] public bool useSkill = false;
 
     [Header("Skill")]
-    protected UnitSkill firstSkill;
-    protected UnitSkill secondSkill;
-    protected UnitSkill thirdSkill;
+    [SerializeField] protected UnitSkill firstSkill;
+    [SerializeField] protected UnitSkill secondSkill;
+    [SerializeField] protected UnitSkill thirdSkill;
 
     protected virtual void Start()
     {
@@ -61,6 +61,11 @@ public abstract class UnitBase : MonoBehaviour
                 curAttackDelay = 0f;
                 AttackFunc();
             }
+        }
+        if(Input.GetKeyDown(KeyCode.Q) && !useSkill && firstSkill.canUse)
+        {
+            Debug.Log("Use Dash!");
+            firstSkill.useSkill.Invoke();
         }
     }
 
