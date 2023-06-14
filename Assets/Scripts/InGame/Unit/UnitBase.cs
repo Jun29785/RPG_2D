@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Define;
 
-public class UnitBase : MonoBehaviour
+public abstract class UnitBase : MonoBehaviour
 {
     public UnitState state;
 
@@ -26,15 +26,21 @@ public class UnitBase : MonoBehaviour
     [SerializeField] protected GameObject basicAttackPrefab;
     [SerializeField] protected bool isBattle;
     protected float attackRange = 1.5f;
-    [SerializeField]protected float curAttackDelay = 0f;
+    [SerializeField] protected float curAttackDelay = 0f;
     [SerializeField] protected float maxAttackDuration = 0.7f;
-    
-    void Start()
+    [SerializeField] public bool useSkill = false;
+
+    [Header("Skill")]
+    protected UnitSkill firstSkill;
+    protected UnitSkill secondSkill;
+    protected UnitSkill thirdSkill;
+
+    protected virtual void Start()
     {
         enemyLayer = LayerMask.NameToLayer("Enemy");
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (isReturning)
             ReturnTeamMove();
@@ -109,7 +115,7 @@ public class UnitBase : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 
-    Transform EnemyDetector()
+    protected Transform EnemyDetector()
     {
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, enemyDetectionRadius, 1 << enemyLayer);
         if (enemies.Length == 0) // Not Detected
@@ -121,7 +127,28 @@ public class UnitBase : MonoBehaviour
         {
             isReturning = false;
             state = UnitState.Individual;
-            return InGameManager.Instance.GetClosetTarget(enemies,transform);
+            return InGameManager.Instance.GetClosetTarget(enemies, transform);
         }
+    }
+
+    protected virtual IEnumerator ActiveFirstSkill()
+    {
+        useSkill = true;
+        yield return null;
+        useSkill = false;
+    }
+
+    protected virtual IEnumerator ActiveSecondSkill()
+    {
+        useSkill = true;
+        yield return null;
+        useSkill = false;
+    }
+
+    protected virtual IEnumerator ActiveThirdSkill()
+    {
+        useSkill = true;
+        yield return null;
+        useSkill = false;
     }
 }

@@ -133,8 +133,8 @@ GameObject:
   m_Component:
   - component: {fileID: 284304139}
   - component: {fileID: 284304138}
-  - component: {fileID: 284304137}
   - component: {fileID: 284304140}
+  - component: {fileID: 284304141}
   m_Layer: 6
   m_Name: Unit
   m_TagString: Untagged
@@ -142,31 +142,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &284304137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 284304136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9d880d5f0f0b2743aecee3f9f5fd982, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: 0
-  basicLocation: {fileID: 0}
-  isReturning: 1
-  moveSpeed: 3
-  enemyDetectionRadius: 7
-  enemyLayer: 0
-  targetEnemy: {fileID: 0}
-  hp: 0
-  damage: 0
-  basicAttackPrefab: {fileID: 1582180367385619955, guid: 41c5c709e660cb84d9e36b516a6fda97, type: 3}
-  isBattle: 0
-  curAttackDelay: 0
-  maxAttackDuration: 0.7
 --- !u!212 &284304138
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -250,6 +225,31 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &284304141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284304136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6e3f9d8449344e4b97a71010fcf45ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  basicLocation: {fileID: 0}
+  isReturning: 0
+  moveSpeed: 3
+  enemyDetectionRadius: 5
+  enemyLayer: 0
+  targetEnemy: {fileID: 0}
+  hp: 0
+  damage: 0
+  basicAttackPrefab: {fileID: 1582180367385619955, guid: 41c5c709e660cb84d9e36b516a6fda97, type: 3}
+  isBattle: 0
+  curAttackDelay: 0
+  maxAttackDuration: 0.7
 --- !u!1 &318985884
 GameObject:
   m_ObjectHideFlags: 0
@@ -1414,6 +1414,9 @@ MonoBehaviour:
   detectUnitRange: 10
   attackRange: 2
   maxAttackDuration: 0
+  getDamage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1261115290
 GameObject:
   m_ObjectHideFlags: 0
