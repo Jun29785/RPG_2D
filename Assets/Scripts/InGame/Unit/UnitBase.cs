@@ -6,6 +6,9 @@ using Define;
 public abstract class UnitBase : MonoBehaviour
 {
     public UnitState state;
+    [Header("Test")]
+    public bool VisibleTargetRange;
+    public bool VisibleAttackRange;
 
     [Header("Enemy Return To Team")]
     public Transform basicLocation;
@@ -21,9 +24,11 @@ public abstract class UnitBase : MonoBehaviour
     [Header("Unit Stat")]
     public int hp;
     public int damage;
+    public float criticalProbability;
 
     [Header("Battle")]
     [SerializeField] protected GameObject basicAttackPrefab;
+    [SerializeField] protected GameObject criticalAttackPrefab;
     [SerializeField] protected bool isBattle;
     protected float attackRange = 1.5f;
     [SerializeField] protected float curAttackDelay = 0f;
@@ -62,7 +67,7 @@ public abstract class UnitBase : MonoBehaviour
                 AttackFunc();
             }
         }
-        if(Input.GetKeyDown(KeyCode.Q) && !useSkill && firstSkill.canUse)
+        if (Input.GetKeyDown(KeyCode.Q) && !useSkill && firstSkill.canUse)
         {
             Debug.Log("Use Dash!");
             firstSkill.useSkill.Invoke();
@@ -87,7 +92,7 @@ public abstract class UnitBase : MonoBehaviour
 
             if (Vector2.Distance(local, targetPosition) < distance)
             {
-                distance = Vector2.Distance(local,targetPosition);
+                distance = Vector2.Distance(local, targetPosition);
             }
 
             transform.Translate(direction * distance, Space.Self);
@@ -97,7 +102,7 @@ public abstract class UnitBase : MonoBehaviour
     protected virtual void MoveToTarget()
     {
         Vector2 direction = (targetEnemy.position - transform.position).normalized;
-        if (Vector2.Distance(targetEnemy.position,transform.position) > attackRange)
+        if (Vector2.Distance(targetEnemy.position, transform.position) > attackRange)
         {
             transform.Translate(direction * moveSpeed * Time.deltaTime);
         }
@@ -109,15 +114,36 @@ public abstract class UnitBase : MonoBehaviour
 
     protected virtual void AttackFunc()
     {
-        UnitManager.Instance.UnitBasicAttack(basicAttackPrefab, transform, targetEnemy, 0, damage, maxAttackDuration/2);
+        if (ProbabilityCalculator(criticalProbability))
+        {
+            UnitManager.Instance.UnitBasicAttack(basicAttackPrefab, transform, targetEnemy, 0, damage, maxAttackDuration / 2);
+
+        }
+
+        UnitManager.Instance.UnitBasicAttack(basicAttackPrefab, transform, targetEnemy, 0, damage, maxAttackDuration / 2);
+    }
+
+    protected bool ProbabilityCalculator(float probability)
+    {
+        if(probability > Random.Range(0f, 100f))
+        {
+            return true;
+        }
+        return false;
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, enemyDetectionRadius);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        if (VisibleTargetRange)
+        {
+            Gizmos.color = Color.grey;
+            Gizmos.DrawWireSphere(transform.position, enemyDetectionRadius);
+        }
+        if (VisibleAttackRange)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(transform.position, attackRange);
+        }
     }
 
     protected Transform EnemyDetector()

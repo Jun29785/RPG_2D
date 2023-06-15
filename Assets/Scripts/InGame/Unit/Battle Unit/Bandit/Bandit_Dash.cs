@@ -8,6 +8,7 @@ public class Bandit_Dash : UnitSkill
     protected override void Start()
     {
         base.Start();
+        
     }
 
     protected override void Update()
@@ -18,25 +19,27 @@ public class Bandit_Dash : UnitSkill
     protected override IEnumerator SkillFunction()
     {
         unit.useSkill = true;
-        Vector2 direction = (unit.targetEnemy.position - unit.transform.position).normalized;
-        float curDelay = 0f; float speed = 10f;
+        float speed = 10f;
         var distance = Vector2.Distance(unit.transform.position, unit.targetEnemy.position);
 
-        #region Test
-        var dis = Mathf.Pow(distance, 2);
-        var x = Mathf.Pow(unit.targetEnemy.position.x - unit.transform.position.x, 2);
-        var y = Mathf.Pow(unit.targetEnemy.position.y - unit.transform.position.y, 2);
-        var X = dis * (x / (x + y));
-        var Y = dis * (y / (x + y));
+        #region Calculate
+        var dis = Mathf.Pow(distance + 1.2f, 2);
+        var x = unit.targetEnemy.position.x - unit.transform.position.x;
+        var y = unit.targetEnemy.position.y - unit.transform.position.y;
+        var X = dis * (Mathf.Pow(x, 2) / (Mathf.Pow(x, 2) + Mathf.Pow(y, 2)));
+        var Y = dis * (Mathf.Pow(y, 2) / (Mathf.Pow(x, 2) + Mathf.Pow(y, 2)));
+        X = x >= 0 ? Mathf.Sqrt(X) : -Mathf.Sqrt(X);
+        Y = y >= 0 ? Mathf.Sqrt(Y) : -Mathf.Sqrt(Y);
         tempObj.localPosition = new Vector2(X, Y);
-
+        Vector3 target = tempObj.position;
+        Vector2 direction = (target - unit.transform.position).normalized;
         #endregion
-        //while (curDelay < distance)
-        //{
-        //    curDelay += Time.deltaTime * Vector2.Distance(unit.transform.position, unit.targetEnemy.position);
-        //    transform.parent.Translate(direction * Time.deltaTime * speed);
-        //    yield return null;
-        //}
+
+        while (Vector2.Distance(unit.transform.position, target) > 0.2f )
+        {
+           transform.parent.Translate(direction * Time.deltaTime * speed);
+            yield return null;
+        }
         yield return null;
         unit.useSkill = false;
     }

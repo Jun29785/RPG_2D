@@ -20,6 +20,7 @@ public abstract class UnitSkill : MonoBehaviour
     {
         useSkill.AddListener(SkillUsed);
         unit = GetComponentInParent<UnitBase>();
+        curCoolDownDelay = maxCoolDownDuration;
     }
 
     protected virtual void Update()

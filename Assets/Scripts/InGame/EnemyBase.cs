@@ -7,6 +7,9 @@ using Define;
 public class EnemyBase : MonoBehaviour
 {
     private IObjectPool<EnemyBase> enemypool;
+    [Header("Test")]
+    public bool VisibleTargetRange;
+    public bool VisibleAttackRange;
 
     [Header("Movement")]
     [SerializeField] private float speed = 0.7f;
@@ -22,7 +25,7 @@ public class EnemyBase : MonoBehaviour
     private float curAttackDelay = 0f;
 
     [Header("Game")]
-    public UnityEvent<int,List<GameEffect>> getDamage; 
+    public UnityEvent<int, List<GameEffect>> getDamage;
 
     void Start()
     {
@@ -41,10 +44,16 @@ public class EnemyBase : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectUnitRange);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        if (VisibleTargetRange)
+        {
+            Gizmos.color = Color.grey;
+            Gizmos.DrawWireSphere(transform.position, detectUnitRange);
+        }
+        if (VisibleAttackRange)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(transform.position, attackRange);
+        }
     }
 
     protected virtual void MoveToTarget()
@@ -65,7 +74,7 @@ public class EnemyBase : MonoBehaviour
         }
         else
         {
-            return InGameManager.Instance.GetClosetTarget(colliders,transform);
+            return InGameManager.Instance.GetClosetTarget(colliders, transform);
         }
     }
 
