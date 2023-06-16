@@ -10,9 +10,9 @@ public class UnitAttack : MonoBehaviour
     public Vector2 direction;
     public List<GameEffect> effect;
     public int increaseValue;
-    [SerializeField] private AttackKind kind = AttackKind.None;
+    [SerializeField] protected AttackKind kind = AttackKind.None;
 
-    private void Update()
+    protected virtual void Update()
     {
         if (kind == AttackKind.None)
         {
@@ -26,9 +26,9 @@ public class UnitAttack : MonoBehaviour
 
     protected void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == 1 << LayerMask.NameToLayer("Enemy"))
+        if (collision.gameObject.layer == 1 << UnitManager.Instance.enemyLayer)
         {
-            collision.transform.GetComponent<EnemyBase>().getDamage.Invoke(damage, effect, kind);
+            collision.transform.GetComponent<EnemyBase>().getDamage.Invoke((int)(damage * (increaseValue/100f)), effect, kind);
         }
     }
 }

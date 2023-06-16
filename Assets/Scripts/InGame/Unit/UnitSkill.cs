@@ -32,12 +32,15 @@ public abstract class UnitSkill : MonoBehaviour
         }
     }
 
-    void SkillUsed()
+    protected virtual void SkillUsed()
     {
         canUse = false;
         curCoolDownDelay = 0f;
-        StartCoroutine(SkillFunction());
+        
     }
 
-    protected abstract IEnumerator SkillFunction();
+    protected virtual IEnumerator SkillFunction()
+    {
+        yield return null;
+    }
 }

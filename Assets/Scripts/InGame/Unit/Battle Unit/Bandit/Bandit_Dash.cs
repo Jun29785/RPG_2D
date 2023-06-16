@@ -16,6 +16,12 @@ public class Bandit_Dash : UnitSkill
         base.Update();
     }
 
+    protected override void SkillUsed()
+    {
+        base.SkillUsed();
+        StartCoroutine(SkillFunction());
+    }
+
     protected override IEnumerator SkillFunction()
     {
         unit.useSkill = true;

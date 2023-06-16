@@ -30,7 +30,7 @@ public abstract class UnitBase : MonoBehaviour
     [Header("Battle")]
     [SerializeField] protected GameObject attackPrefab;
     [SerializeField] protected bool isBattle;
-    protected float attackRange = 1.5f;
+    public float attackRange = 1.5f;
     [SerializeField] protected float curAttackDelay = 0f;
     [SerializeField] protected float maxAttackDuration = 0.7f;
     [SerializeField] public bool useSkill = false;
@@ -71,6 +71,11 @@ public abstract class UnitBase : MonoBehaviour
         {
             Debug.Log("Use Dash!");
             firstSkill.useSkill.Invoke();
+        }
+        if(Input.GetKeyDown(KeyCode.W) && !useSkill && secondSkill.canUse)
+        {
+            Debug.Log("Use Poke!");
+            secondSkill.useSkill.Invoke();
         }
     }
 
@@ -159,26 +164,5 @@ public abstract class UnitBase : MonoBehaviour
             state = UnitState.Individual;
             return InGameManager.Instance.GetClosetTarget(enemies, transform);
         }
-    }
-
-    protected virtual IEnumerator ActiveFirstSkill()
-    {
-        useSkill = true;
-        yield return null;
-        useSkill = false;
-    }
-
-    protected virtual IEnumerator ActiveSecondSkill()
-    {
-        useSkill = true;
-        yield return null;
-        useSkill = false;
-    }
-
-    protected virtual IEnumerator ActiveThirdSkill()
-    {
-        useSkill = true;
-        yield return null;
-        useSkill = false;
     }
 }

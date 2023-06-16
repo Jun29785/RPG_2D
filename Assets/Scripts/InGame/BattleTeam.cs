@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 public class BattleTeam : MonoBehaviour
 {
+    private Rigidbody2D rb;
     #region Field
     [Header("Field")]
     [SerializeField] private SpriteRenderer field;
@@ -39,7 +40,7 @@ public class BattleTeam : MonoBehaviour
     [SerializeField] private TeamState state;
     public UnityEvent changeState;
     #endregion
-            
+
 
     #region Test
     [Header("Visual Test")]
@@ -56,6 +57,11 @@ public class BattleTeam : MonoBehaviour
     [SerializeField] private bool IsMove;
     [SerializeField] private float maxMoveWaitDuration;
     [SerializeField] private float curMoveWaitDelay;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     void Start()
     {
@@ -86,17 +92,17 @@ public class BattleTeam : MonoBehaviour
                 Units[0].basicLocation = basicLocations[0];
                 break;
             case 2:
-                basicLocations[0].localPosition = new Vector2(-(Mathf.Sqrt(3)/3),0);
-                basicLocations[1].localPosition = new Vector2(Mathf.Sqrt(3)/3,0);
+                basicLocations[0].localPosition = new Vector2(-(Mathf.Sqrt(3) / 3), 0);
+                basicLocations[1].localPosition = new Vector2(Mathf.Sqrt(3) / 3, 0);
                 Units[0].basicLocation = basicLocations[0];
                 Units[1].basicLocation = basicLocations[1];
                 break;
             case 3:
                 basicLocations[0].localPosition = Vector2.up;
-                basicLocations[1].localPosition = new Vector2(-(Mathf.Sqrt(3) / 3), -(1/2));
-                basicLocations[2].localPosition = new Vector2(Mathf.Sqrt(3) / 3, -(1/2));
+                basicLocations[1].localPosition = new Vector2(-(Mathf.Sqrt(3) / 3), -(1 / 2));
+                basicLocations[2].localPosition = new Vector2(Mathf.Sqrt(3) / 3, -(1 / 2));
                 Units[0].basicLocation = basicLocations[0];
-                Units[1].basicLocation  = basicLocations[1];
+                Units[1].basicLocation = basicLocations[1];
                 Units[2].basicLocation = basicLocations[2];
                 break;
             default:
@@ -115,6 +121,7 @@ public class BattleTeam : MonoBehaviour
         if (curMoveWaitDelay < maxMoveWaitDuration && IsMove)
         {
             transform.Translate(DirectionVector * speed * Time.deltaTime);
+            //rb.MovePosition(transform.position + (Vector3)DirectionVector * speed * Time.deltaTime);
         }
         else
         {
@@ -124,7 +131,7 @@ public class BattleTeam : MonoBehaviour
             IsMove = true;
         }
     }
-    
+
     IEnumerator RandomMove()
     {
         DirectionVector = Vector2.zero;
@@ -246,13 +253,13 @@ public class DirectionW
 {
     public Vector2 direction;
     public float weight;
-    
+
     public DirectionW()
     {
 
     }
 
-    public DirectionW(Vector2 direction,float weight)
+    public DirectionW(Vector2 direction, float weight)
     {
         this.direction = direction;
         this.weight = weight;
