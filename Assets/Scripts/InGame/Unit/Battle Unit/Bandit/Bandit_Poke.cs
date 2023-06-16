@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Bandit_Poke : UnitSkill
 {
+    [SerializeField] private GameObject pokeAttack;
+
     protected override void Start()
     {
         base.Start();
@@ -18,6 +20,8 @@ public class Bandit_Poke : UnitSkill
     protected override IEnumerator SkillFunction()
     {
         unit.useSkill = true;
+        Instantiate(pokeAttack).TryGetComponent<UnitAttack>(out UnitAttack attack);
+
         yield return null;
         unit.useSkill = false;
     }
