@@ -21,11 +21,11 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] private int damage;
     [SerializeField] private float detectUnitRange = 10f;
     [SerializeField] private float attackRange = 2f;
-    [SerializeField] private float maxAttackDuration = 0.7f;
     private float curAttackDelay = 0f;
+    [SerializeField] private float maxAttackDuration = 0.7f;
 
     [Header("Game")]
-    public UnityEvent<int, List<GameEffect>> getDamage;
+    public UnityEvent<int, List<GameEffect>,AttackKind> getDamage;
 
     void Start()
     {
@@ -83,8 +83,9 @@ public class EnemyBase : MonoBehaviour
         enemypool = pool;
     }
 
-    private void GetDamage(int damage, List<GameEffect> gameEffect)
+    private void GetDamage(int damage, List<GameEffect> gameEffect,AttackKind kind)
     {
+        Debug.Log($"Get Damaged : {damage}");
         hp -= damage;
 
     }

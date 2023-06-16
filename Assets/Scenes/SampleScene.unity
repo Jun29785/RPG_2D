@@ -248,7 +248,9 @@ MonoBehaviour:
   targetEnemy: {fileID: 0}
   hp: 0
   damage: 0
-  basicAttackPrefab: {fileID: 1582180367385619955, guid: 41c5c709e660cb84d9e36b516a6fda97, type: 3}
+  criticalProbability: 30
+  criticalIncreaseValue: 0
+  attackPrefab: {fileID: 1582180367385619955, guid: 41c5c709e660cb84d9e36b516a6fda97, type: 3}
   isBattle: 0
   curAttackDelay: 0
   maxAttackDuration: 0.7
@@ -1439,7 +1441,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1146997852}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 499907a0c58f5f141904829f5868bb4e, type: 3}
   m_Name: 

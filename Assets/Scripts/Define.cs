@@ -16,4 +16,11 @@ namespace Define
     {
         None,
     }
+
+    public enum AttackKind
+    {
+        None,
+        Normal,
+        Critical
+    }
 }

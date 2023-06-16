@@ -25,10 +25,10 @@ public abstract class UnitBase : MonoBehaviour
     public int hp;
     public int damage;
     public float criticalProbability;
+    public int criticalIncreaseValue;
 
     [Header("Battle")]
-    [SerializeField] protected GameObject basicAttackPrefab;
-    [SerializeField] protected GameObject criticalAttackPrefab;
+    [SerializeField] protected GameObject attackPrefab;
     [SerializeField] protected bool isBattle;
     protected float attackRange = 1.5f;
     [SerializeField] protected float curAttackDelay = 0f;
@@ -114,18 +114,17 @@ public abstract class UnitBase : MonoBehaviour
 
     protected virtual void AttackFunc()
     {
+        int increase = 100;
         if (ProbabilityCalculator(criticalProbability))
         {
-            UnitManager.Instance.UnitBasicAttack(basicAttackPrefab, transform, targetEnemy, 0, damage, maxAttackDuration / 2);
-
+            increase = criticalIncreaseValue;
         }
-
-        UnitManager.Instance.UnitBasicAttack(basicAttackPrefab, transform, targetEnemy, 0, damage, maxAttackDuration / 2);
+        UnitManager.Instance.UnitAttack(attackPrefab, transform, targetEnemy, 0, damage, increase, 0.3f);
     }
 
     protected bool ProbabilityCalculator(float probability)
     {
-        if(probability > Random.Range(0f, 100f))
+        if (probability > Random.Range(0f, 100f))
         {
             return true;
         }
