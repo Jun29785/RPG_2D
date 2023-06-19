@@ -11,8 +11,7 @@ public class PokeAttack : UnitAttack
     {
         Vector2 vectorToTarget = (target.position - unit.position);
         float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
-        Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = q;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
     protected override void Update()

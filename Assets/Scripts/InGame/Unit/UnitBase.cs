@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Define;
 
 public abstract class UnitBase : MonoBehaviour
@@ -40,9 +41,13 @@ public abstract class UnitBase : MonoBehaviour
     [SerializeField] protected UnitSkill secondSkill;
     [SerializeField] protected UnitSkill thirdSkill;
 
+    [Header("Event")]
+    public UnityEvent attackEvent;
+
     protected virtual void Start()
     {
         enemyLayer = LayerMask.NameToLayer("Enemy");
+        EventInitialize();
     }
 
     protected virtual void Update()
@@ -58,13 +63,13 @@ public abstract class UnitBase : MonoBehaviour
         {
             MoveToTarget();
         }
-        if (isBattle)
+        if (isBattle && !useSkill)
         {
             curAttackDelay += Time.deltaTime;
             if (curAttackDelay > maxAttackDuration)
             {
                 curAttackDelay = 0f;
-                AttackFunc();
+                attackEvent.Invoke();
             }
         }
         if (Input.GetKeyDown(KeyCode.Q) && !useSkill && firstSkill.canUse)
@@ -77,6 +82,11 @@ public abstract class UnitBase : MonoBehaviour
             Debug.Log("Use Poke!");
             secondSkill.useSkill.Invoke();
         }
+    }
+
+    void EventInitialize()
+    {
+        attackEvent.AddListener(AttackFunc);
     }
 
     protected virtual void ReturnTeamMove()

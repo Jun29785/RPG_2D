@@ -29,7 +29,7 @@ public class Bandit_Dash : UnitSkill
         var distance = Vector2.Distance(unit.transform.position, unit.targetEnemy.position);
 
         #region Calculate
-        var dis = Mathf.Pow(distance + 1.2f, 2);
+        var dis = Mathf.Pow(distance + 1.5f, 2);
         var x = unit.targetEnemy.position.x - unit.transform.position.x;
         var y = unit.targetEnemy.position.y - unit.transform.position.y;
         var X = dis * (Mathf.Pow(x, 2) / (Mathf.Pow(x, 2) + Mathf.Pow(y, 2)));
@@ -46,6 +46,7 @@ public class Bandit_Dash : UnitSkill
            transform.parent.Translate(direction * Time.deltaTime * speed);
             yield return null;
         }
+        // critical attack
         yield return null;
         unit.useSkill = false;
     }
