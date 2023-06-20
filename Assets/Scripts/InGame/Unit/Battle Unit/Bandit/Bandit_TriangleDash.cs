@@ -7,6 +7,9 @@ public class Bandit_TriangleDash : UnitSkill
     [SerializeField] int skillTime;
     [SerializeField] bool isSkill;
     [SerializeField] float wait = .32f;
+
+    [SerializeField] List<Transform> inRangeEnemies;
+
     protected override void Start()
     {
         base.Start();
@@ -22,6 +25,7 @@ public class Bandit_TriangleDash : UnitSkill
     protected override void SkillUsed()
     {
         base.SkillUsed();
+        inRangeEnemies.Clear();
         TriangleMove();
     }
 
@@ -48,5 +52,30 @@ public class Bandit_TriangleDash : UnitSkill
             unit.transform.Rotate(Vector3.forward, 120);
         }
         Invoke("TriangleMove", wait);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 1 << LayerMask.NameToLayer("Enemy"))
+        {
+            // ADD List
+            var cnt = 0;
+            foreach (Transform inRange in inRangeEnemies)
+            {
+                if (inRange == collision.transform)
+                    cnt++;
+            }
+            if (cnt == 0)
+            {
+                inRangeEnemies.Add(collision.transform);
+
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(transform.position, 1f);
     }
 }
