@@ -6,6 +6,7 @@ public class Bandit_Poke : UnitSkill
 {
     [SerializeField] private GameObject pokeAttack;
     [SerializeField] private int increaseValue;
+
     protected override void Start()
     {
         base.Start();

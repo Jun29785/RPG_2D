@@ -74,13 +74,18 @@ public abstract class UnitBase : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Q) && !useSkill && firstSkill.canUse)
         {
-            Debug.Log("Use Dash!");
+            Debug.Log("Use FirstSkill");
             firstSkill.useSkill.Invoke();
         }
         if(Input.GetKeyDown(KeyCode.W) && !useSkill && secondSkill.canUse)
         {
-            Debug.Log("Use Poke!");
+            Debug.Log("Use SecondSkill");
             secondSkill.useSkill.Invoke();
+        }
+        if (Input.GetKeyDown(KeyCode.E) && !useSkill && thirdSkill.canUse)
+        {
+            Debug.Log("Use ThirdSkill");
+            thirdSkill.useSkill.Invoke();
         }
     }
 
