@@ -17,20 +17,25 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] private int unitLayer;
 
     [Header("Stat")]
-    [SerializeField] [Range(0, 100000)] private int hp;
-    [SerializeField] private int damage;
+    [SerializeField] [Range(0, 100000)] protected int hp;
+    [SerializeField] protected int damage;
+    [SerializeField] protected float attackSpeed;
     [SerializeField] private float detectUnitRange = 10f;
     [SerializeField] private float attackRange = 2f;
     private float curAttackDelay = 0f;
     [SerializeField] private float maxAttackDuration = 0.7f;
 
     [Header("Game")]
-    public UnityEvent<int, List<GameEffect>,AttackKind> getDamage;
+    private bool isBattle;
+    [SerializeField] protected GameObject attackObject;
+    public UnityEvent<int, List<GameEffect>, AttackKind> getDamage;
+    private UnityEvent attackEvent;
 
     void Start()
     {
         unitLayer = LayerMask.NameToLayer("Unit");
         getDamage.AddListener(GetDamage);
+        attackEvent.AddListener(AttackFunc);
     }
 
     void Update()
@@ -38,7 +43,16 @@ public class EnemyBase : MonoBehaviour
         if (targetUnit == null) targetUnit = UnitDetector();
         else
         {
-            MoveToTarget();
+            MoveToTarget(); 
+        }
+
+        if (isBattle)
+        {
+            curAttackDelay += Time.deltaTime;
+            if (maxAttackDuration < curAttackDelay)
+            {
+                attackEvent.Invoke();
+            }
         }
     }
 
@@ -63,10 +77,15 @@ public class EnemyBase : MonoBehaviour
         {
             transform.Translate(direction * speed * Time.deltaTime);
         }
+        else
+        {
+            isBattle = true;
+        }
     }
 
     Transform UnitDetector()
     {
+        isBattle = false;
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, detectUnitRange, 1 << unitLayer);
         if (colliders.Length == 0)
         {
@@ -83,10 +102,15 @@ public class EnemyBase : MonoBehaviour
         enemypool = pool;
     }
 
-    private void GetDamage(int damage, List<GameEffect> gameEffect,AttackKind kind)
+    private void GetDamage(int damage, List<GameEffect> gameEffect, AttackKind kind)
     {
         Debug.Log($"Get Damaged : {damage}");
         hp -= damage;
 
+    }
+
+    protected virtual void AttackFunc()
+    {
+        InGameManager.Instance.enemyManager.EnemyAttack(attackObject, transform, targetUnit, attackSpeed, damage, .3f);
     }
 }

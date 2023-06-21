@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
-    public static UnitManager Instance;
-
     public int enemyLayer;
 
     private void Awake()
     {
-        Instance = this;
         enemyLayer = LayerMask.NameToLayer("Enemy");
     }
 

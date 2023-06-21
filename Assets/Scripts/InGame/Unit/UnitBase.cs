@@ -43,6 +43,7 @@ public abstract class UnitBase : MonoBehaviour
 
     [Header("Event")]
     public UnityEvent attackEvent;
+    public UnityEvent<int,List<GameEffect>> getDamageEvent;
 
     protected virtual void Start()
     {
@@ -92,6 +93,7 @@ public abstract class UnitBase : MonoBehaviour
     void EventInitialize()
     {
         attackEvent.AddListener(AttackFunc);
+        getDamageEvent.AddListener(GetDamage);
     }
 
     protected virtual void ReturnTeamMove()
@@ -139,7 +141,7 @@ public abstract class UnitBase : MonoBehaviour
         {
             increase = criticalIncreaseValue;
         }
-        UnitManager.Instance.UnitAttack(attackPrefab, transform, targetEnemy, 0, damage, increase, 0.3f);
+        InGameManager.Instance.unitManager.UnitAttack(attackPrefab, transform, targetEnemy, 0, damage, increase, 0.3f);
     }
 
     protected bool ProbabilityCalculator(float probability)
@@ -178,6 +180,15 @@ public abstract class UnitBase : MonoBehaviour
             isReturning = false;
             state = UnitState.Individual;
             return InGameManager.Instance.GetClosetTarget(enemies, transform);
+        }
+    }
+
+    protected virtual void GetDamage(int damage,List<GameEffect> effects)
+    {
+        hp -= damage;
+        if(hp <= 0)
+        {
+            // DIE
         }
     }
 }

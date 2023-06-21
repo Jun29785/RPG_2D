@@ -26,7 +26,7 @@ public class UnitAttack : MonoBehaviour
 
     protected void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == 1 << UnitManager.Instance.enemyLayer)
+        if (collision.gameObject.layer == 1 << InGameManager.Instance.unitManager.enemyLayer)
         {
             collision.transform.GetComponent<EnemyBase>().getDamage.Invoke((int)(damage * (increaseValue/100f)), effect, kind);
         }

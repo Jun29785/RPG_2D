@@ -20,7 +20,7 @@ public class Bandit_Poke : UnitSkill
     protected override void SkillUsed()
     {
         base.SkillUsed();
-        GameObject obj = UnitManager.Instance.UnitAttack(pokeAttack, unit.transform, unit.targetEnemy, 3.5f, damage, increaseValue, 0.4f);
+        GameObject obj = InGameManager.Instance.unitManager.UnitAttack(pokeAttack, unit.transform, unit.targetEnemy, 3.5f, damage, increaseValue, 0.4f);
         obj.TryGetComponent<PokeAttack>(out PokeAttack poke);
         poke.direction = Vector2.right;
         poke.unit = unit.transform;

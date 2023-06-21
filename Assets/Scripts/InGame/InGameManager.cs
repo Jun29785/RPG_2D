@@ -6,6 +6,9 @@ public class InGameManager : MonoBehaviour
 {
     public static InGameManager Instance;
 
+    public UnitManager unitManager;
+    public EnemyManager enemyManager;
+
     private void Awake()
     {
         Instance = this;
