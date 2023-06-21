@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Define;
 public class Bandit_TriangleDash : UnitSkill
 {
     [SerializeField] int skillTime;
@@ -9,7 +9,7 @@ public class Bandit_TriangleDash : UnitSkill
     [SerializeField] float wait = .32f;
 
     [SerializeField] List<Transform> inRangeEnemies;
-
+    private List<GameEffect> gameEffects;
     protected override void Start()
     {
         base.Start();
@@ -37,6 +37,13 @@ public class Bandit_TriangleDash : UnitSkill
             isSkill = false;
             skillTime = 0;
             unit.useSkill = false;
+            // Attack Enemies
+            foreach (Transform rangeEnemy in inRangeEnemies)
+            {
+                rangeEnemy.TryGetComponent<EnemyBase>(out EnemyBase enemy);
+                enemy.getDamage.Invoke(damage, gameEffects, AttackKind.Normal);
+            }
+
             return;
         }
         else if (skillTime == 1)
@@ -68,7 +75,6 @@ public class Bandit_TriangleDash : UnitSkill
             if (cnt == 0)
             {
                 inRangeEnemies.Add(collision.transform);
-
             }
         }
     }
