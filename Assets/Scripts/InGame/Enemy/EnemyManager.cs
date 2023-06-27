@@ -31,8 +31,23 @@ public class EnemyManager : MonoBehaviour
         Instantiate(prefab).TryGetComponent<EnemyAttack>(out EnemyAttack atk);
         atk.transform.parent = enemy;
         atk.transform.position = (enemy.position + target.position) / 2;
-        
+
 
         return null;
+    }
+
+    public void SpawnEnemy(GameObject enemy)
+    {
+        Vector2 location = new Vector2();
+
+        CreateEnemyObject(enemy);
+    }
+
+    /// <summary>
+    /// 적을 생성하는 함수 enemy : 생성할 적 오브젝트
+    /// </summary>
+    private GameObject CreateEnemyObject(GameObject enemy)
+    {
+        return Instantiate(enemy);
     }
 }

@@ -19,10 +19,5 @@ public class Stage : MonoBehaviour
         
     }
 
-    public GameObject EnemySpawn(GameObject enemy, Transform location)
-    {
-        Instantiate(enemy).TryGetComponent<EnemyBase>(out EnemyBase en);
-        en.transform.position = location.position;
-        return null;
-    }
+    
 }
