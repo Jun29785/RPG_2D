@@ -185,6 +185,7 @@ public abstract class UnitBase : MonoBehaviour
 
     protected virtual void GetDamage(int damage,List<GameEffect> effects)
     {
+        Debug.Log($"Get Damaged : {damage}");
         hp -= damage;
         if(hp <= 0)
         {

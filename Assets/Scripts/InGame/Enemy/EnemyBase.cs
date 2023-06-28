@@ -22,14 +22,14 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] protected float attackSpeed;
     [SerializeField] private float detectUnitRange = 10f;
     [SerializeField] private float attackRange = 2f;
-    private float curAttackDelay = 0f;
+    [SerializeField] private float curAttackDelay = 0f;
     [SerializeField] private float maxAttackDuration = 0.7f;
 
     [Header("Game")]
     private bool isBattle;
     [SerializeField] protected GameObject attackObject;
     public UnityEvent<int, List<GameEffect>, AttackKind> getDamage;
-    private UnityEvent attackEvent;
+    [SerializeField] private UnityEvent attackEvent;
 
     void Start()
     {
@@ -51,6 +51,7 @@ public class EnemyBase : MonoBehaviour
             curAttackDelay += Time.deltaTime;
             if (maxAttackDuration < curAttackDelay)
             {
+                curAttackDelay = 0f;
                 attackEvent.Invoke();
             }
         }

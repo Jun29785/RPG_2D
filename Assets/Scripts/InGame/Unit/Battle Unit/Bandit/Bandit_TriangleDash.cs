@@ -81,7 +81,7 @@ public class Bandit_TriangleDash : UnitSkill
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position, 1f);
+        //Gizmos.color = Color.green;
+        //Gizmos.DrawSphere(transform.position, 1f);
     }
 }

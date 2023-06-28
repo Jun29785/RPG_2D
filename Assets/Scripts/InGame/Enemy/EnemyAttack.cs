@@ -21,9 +21,10 @@ public class EnemyAttack : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == 1 << LayerMask.NameToLayer("Unit"))
+        if (collision.gameObject.layer == InGameManager.Instance.enemyManager.unitLayer)
         {
-            
+            collision.transform.GetComponent<UnitBase>()
+                .getDamageEvent.Invoke((int)(damage), effects);
         }
     }
 }

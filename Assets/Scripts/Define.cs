@@ -23,4 +23,11 @@ namespace Define
         Normal,
         Critical
     }
+
+    public enum EnemyType
+    {
+        Normal_1 = 0,
+        Normal_2,
+        Normal_3
+    }
 }

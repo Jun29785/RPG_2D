@@ -13,10 +13,10 @@ public class BattleTeam : MonoBehaviour
     float field_width;
     float field_height;
 
-    Vector2 field_Left;
-    Vector2 field_Right;
-    Vector2 field_Up;
-    Vector2 field_Down;
+    [SerializeField] Vector2 field_Left;
+    [SerializeField] Vector2 field_Right;
+    [SerializeField] Vector2 field_Up;
+    [SerializeField] Vector2 field_Down;
     #endregion
     #region Weight
     float weight_Left;
@@ -219,24 +219,6 @@ public class BattleTeam : MonoBehaviour
         perpendicular_line.SetPosition(0, transform.position);
         perpendicular_line.SetPosition(1, perpendicularTransform.position);
     }
-
-    //Vector2 CrossCheck(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
-    //{
-    //    float x1, x2, x3, x4, y1, y2, y3, y4, X, Y;
-
-    //    x1 = a.x; y1 = a.y;
-    //    x2 = b.x; y2 = b.y;
-    //    x3 = c.x; y3 = c.y;
-    //    x4 = d.x; y4 = d.y;
-
-    //    float cross = ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-    //    if (cross == 0) return new Vector2(10000, 10000);
-
-    //    X = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / cross;
-    //    Y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / cross;
-
-    //    return new Vector2(X, Y);
-    //}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
