@@ -14,14 +14,35 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] SpriteRenderer field;
     private float fieldWidth;
     private float fieldHeight;
-    [SerializeField] private Vector2[] vertexs;
+    private Vector2[] vertexs;
     [SerializeField] [Range(0f, 10f)] private float spawnRange = 1.2f;
+    [SerializeField] private Transform enemyParent;
     #endregion
+
+    private void Awake()
+    {
+        Initialize();
+    }
 
     void Start()
     {
-        unitLayer = LayerMask.NameToLayer("Unit");
-        enemyPrefabs = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Enemy"));
+
+    }
+
+    void Update()
+    {
+
+    }
+
+    private void Initialize()
+    {
+        unitLayer = LayerMask.NameToLayer("Unit"); /*Unit Layer*/
+        enemyPrefabs = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Enemy")); /*Load Enemy Prefabs in Resources*/
+        FieldInitialize();
+    }
+
+    private void FieldInitialize()
+    {
         fieldWidth = field.sprite.bounds.size.x * field.transform.lossyScale.x;
         fieldHeight = field.sprite.bounds.size.y * field.transform.lossyScale.y;
         float fieldX = field.transform.position.x; float fieldY = field.transform.position.y;
@@ -31,11 +52,6 @@ public class EnemyManager : MonoBehaviour
             new Vector2(fieldX + (fieldWidth / 2), fieldY + (fieldHeight / 2)),
             new Vector2(fieldX + (fieldWidth / 2), fieldY - (fieldHeight / 2))
         };
-    }
-
-    void Update()
-    {
-        
     }
 
     /// <summary>
@@ -61,11 +77,12 @@ public class EnemyManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 적을 생성하는 함수 type : 생성할 적
+    /// 적을 생성하는 함수 type : 생성할 적 종류
     /// </summary>
-    private GameObject SpawnEnemy(EnemyType type)
+    public GameObject SpawnEnemy(EnemyType type)
     {
         GameObject enemy = Instantiate(enemyPrefabs[(int)type]);
+        enemy.transform.parent = enemyParent;
         enemy.transform.position = GetSpawnPosition();
 
         return enemy;
@@ -84,6 +101,14 @@ public class EnemyManager : MonoBehaviour
         Vector2 secondSelectedVector = vertexs[(randNumber + 4) % 4];
         float x = firstSelectedVector.x > secondSelectedVector.x ? Random.Range(secondSelectedVector.x, firstSelectedVector.x) : Random.Range(firstSelectedVector.x, secondSelectedVector.x);
         float y = firstSelectedVector.y > secondSelectedVector.y ? Random.Range(secondSelectedVector.y, firstSelectedVector.y) : Random.Range(firstSelectedVector.y, secondSelectedVector.y);
-        return new Vector2(x + Random.Range(-spawnRange,spawnRange),y + Random.Range(-spawnRange,spawnRange));
+        return new Vector2(x + Random.Range(-spawnRange, spawnRange), y + Random.Range(-spawnRange, spawnRange));
+    }
+
+    public void ClearAllEnemy()
+    {
+        foreach(Transform enemy in enemyParent)
+        {
+            Destroy(enemy.gameObject);
+        }
     }
 }
