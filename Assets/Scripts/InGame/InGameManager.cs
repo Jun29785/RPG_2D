@@ -8,6 +8,13 @@ public class InGameManager : MonoBehaviour
 
     public UnitManager unitManager;
     public EnemyManager enemyManager;
+    public StageManager stageManager;
+
+    public InGameMainCanvas canvas;
+
+    public int teamStrength;
+    public int userCoin;
+
 
     private void Awake()
     {

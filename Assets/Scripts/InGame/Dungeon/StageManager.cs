@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Define;
 
-public class Stage : MonoBehaviour
+public class StageManager : MonoBehaviour
 {
     public int currentStage;
     public int allEnemyCount;
