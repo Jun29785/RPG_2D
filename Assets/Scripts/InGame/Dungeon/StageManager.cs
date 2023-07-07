@@ -40,9 +40,15 @@ public class StageManager : MonoBehaviour
     {
         if (isStarted)
         {
+            EnemySpawn();
             Invoke("EnemySpawnTimer", enemySpawnDelay);
             return;
         }
         return;
+    }
+
+    void EnemySpawn()
+    {
+
     }
 }

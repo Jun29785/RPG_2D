@@ -15,6 +15,7 @@ public class InGameManager : MonoBehaviour
     public int teamStrength;
     public int userCoin;
 
+    public BattleTeam team;
 
     private void Awake()
     {
@@ -28,10 +29,13 @@ public class InGameManager : MonoBehaviour
 
     void Initialize()
     {
-
+        TeamInitialize();
     }
 
-    public Transform GetClosetTarget(Collider2D[] colliders,Transform obj)
+    /// <summary>
+    /// 가장 가까운 타겟을 찾는 메서드
+    /// </summary>
+    public Transform GetClosetTarget(Collider2D[] colliders, Transform obj)
     {
         float closetDis = float.PositiveInfinity;
         Transform ClosetTarget = null;
@@ -47,5 +51,10 @@ public class InGameManager : MonoBehaviour
             }
         }
         return ClosetTarget;
+    }
+
+    void TeamInitialize()
+    {
+
     }
 }

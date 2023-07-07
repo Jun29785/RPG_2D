@@ -2100,6 +2100,7 @@ MonoBehaviour:
   field_Up: {x: 0, y: 0}
   field_Down: {x: 0, y: 0}
   perpendicularTransform: {fileID: 1328798513}
+  Units: []
   unitParent: {fileID: 1122429301}
   basicLocationParent: {fileID: 318985885}
   state: 1
@@ -2259,6 +2260,7 @@ MonoBehaviour:
   canvas: {fileID: 0}
   teamStrength: 0
   userCoin: 0
+  team: {fileID: 0}
 --- !u!4 &966649938
 Transform:
   m_ObjectHideFlags: 0

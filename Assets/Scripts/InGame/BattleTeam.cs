@@ -34,7 +34,7 @@ public class BattleTeam : MonoBehaviour
     #region Team Unit
     [Header("Team Unit")]
     private List<Transform> basicLocations = new List<Transform>();
-    private List<UnitBase> Units = new List<UnitBase>();
+    public List<UnitBase> Units = new List<UnitBase>();
     [SerializeField] private Transform unitParent;
     [SerializeField] private Transform basicLocationParent;
     [SerializeField] private TeamState state;
