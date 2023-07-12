@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TeamSetting : MonoBehaviour
 {
+    public TeamSettingObject selectedObject;
+
     void Start()
     {
         

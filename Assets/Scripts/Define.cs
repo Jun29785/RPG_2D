@@ -1,5 +1,13 @@
 namespace Define
 {
+    public enum UnitType 
+    {
+        None,
+        Knight,
+        Bandit,
+        Dragon
+    }
+
     public enum UnitState
     {
         Team,

@@ -6,6 +6,7 @@ using Define;
 
 public abstract class UnitBase : MonoBehaviour
 {
+    public UnitType type;
     public UnitState state;
     [Header("Test")]
     public bool VisibleTargetRange;

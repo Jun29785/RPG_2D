@@ -6,4 +6,5 @@ public class InGameMainCanvas : MonoBehaviour
 {
     public UserInfo userInfo;
     public StageInfo stageInfo;
+    public TeamSetting teamSetting;
 }
