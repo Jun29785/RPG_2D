@@ -8,19 +8,20 @@ public class TeamSettingUnitSelectObject : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private GameObject SelectedImage;
     public GameObject UnlockImage;
-    public bool isUnLocked;
+    public bool isUnlocked;
     public UnitType type;
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!isUnLocked) return;
+        if (!isUnlocked) return;
         transform.parent.parent.TryGetComponent<TeamSettingUnitSelect>(out TeamSettingUnitSelect unitSelect);
-        if (!unitSelect.IsSelected) unitSelect.selectedObject = this;
-        else unitSelect.selectedObject = null;
-        unitSelect.IsSelected = !unitSelect.IsSelected;
+        if (unitSelect.selectLimit >= GameManager.Instance.userDataManager.data.TeamLimit) return;
+        unitSelect.unitSelected[type] = !unitSelect.unitSelected[type];
+        SetSelectedImage(unitSelect.unitSelected[type]); // selected effect outline
+        unitSelect.selectLimit++;
     }
 
-    public void SetUnLockImage(bool value)
+    public void SetUnlockImage(bool value)
     {
         UnlockImage.SetActive(value);
     }
