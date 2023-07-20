@@ -8,6 +8,6 @@ public class UserData
 
     public int TeamLimit;
 
-    public Dictionary<UnitType, bool> unlockedUnits = new Dictionary<UnitType, bool>();
-    public Dictionary<UnitType, bool> selectedUnits = new Dictionary<UnitType, bool>();
+    public Dictionary<int, bool> unlockedUnits = new Dictionary<int, bool>();
+    public Dictionary<int, bool> selectedUnits = new Dictionary<int, bool>();
 }

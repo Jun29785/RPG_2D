@@ -13,10 +13,11 @@ public class DataBaseManager : Singleton<DataBaseManager>
 
     void LoadUnitTable()
     {
-        TextAsset csvText = Resources.Load<TextAsset>("TableBase/UnitBase");
+        TextAsset csvText = Resources.Load<TextAsset>("TableBase/UnitTable");
 
         tdUnitDict.Clear();
 
+        Debug.Log(csvText);
         string[] parseObj = csvText.text.Trim().Split("\n");
 
         foreach(string str in parseObj)

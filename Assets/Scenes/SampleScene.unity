@@ -868,6 +868,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectlimit: 0
+  teamStrengthTMP: {fileID: 69800196}
+  teamLimitTMP: {fileID: 1561315521}
   selectedObjectPrefab: {fileID: 7025694644680194066, guid: eacc8aec3b88b824da22f40f1f798349, type: 3}
   selectedObjectParent: {fileID: 102076338}
 --- !u!114 &155869314
@@ -3016,6 +3018,7 @@ GameObject:
   - component: {fileID: 780187445}
   - component: {fileID: 780187444}
   - component: {fileID: 780187443}
+  - component: {fileID: 780187446}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3066,6 +3069,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &780187446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780187442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b94d40c0cbabc5647934b6a486e0f161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &827222610
 GameObject:
   m_ObjectHideFlags: 0

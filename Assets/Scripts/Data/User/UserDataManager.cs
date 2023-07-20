@@ -10,12 +10,12 @@ public class UserDataManager : MonoBehaviour
 
     void Start()
     {
+        InitUserData();
         
     }
 
     void Update()
     {
-        InitUserData();
     }
 
     public void InitUserData()
@@ -25,8 +25,8 @@ public class UserDataManager : MonoBehaviour
         data.TeamLimit = 1;
         foreach (UnitType type in Enum.GetValues(typeof(UnitType)))
         {
-            data.unlockedUnits[type] = false;
-            data.selectedUnits[type] = false;
+            data.unlockedUnits[(int)type] = false;
+            data.selectedUnits[(int)type] = false;
         }
     }
 }

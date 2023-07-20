@@ -6,9 +6,8 @@ public class GameManager : Singleton<GameManager>
 {
     public UserDataManager userDataManager;
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
         DontDestroyOnLoad(gameObject);
     }
 
@@ -19,6 +18,11 @@ public class GameManager : Singleton<GameManager>
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            DataBaseManager.Instance.LoadTable();
+            Debug.Log(DataBaseManager.Instance.tdUnitDict.Count);
+        }
         
     }
 }
