@@ -31,6 +31,8 @@ public class TeamSettingUnitSelect : MonoBehaviour
         {
             GameManager.Instance.userDataManager.data.unlockedUnits[(int)UnitType.Bandit] = true;
             GameManager.Instance.userDataManager.data.selectedUnits[(int)UnitType.Bandit] = true;
+            GameManager.Instance.userDataManager.data.unlockedUnits[(int)UnitType.Knight] = true;
+            GameManager.Instance.userDataManager.data.selectedUnits[(int)UnitType.Knight] = true;
         }    
     }
 
@@ -70,6 +72,7 @@ public class TeamSettingUnitSelect : MonoBehaviour
             if (pair.Value)
             {
                 GameManager.Instance.userDataManager.data.selectedUnits = unitSelected;
+                transform.parent.GetComponent<TeamSetting>().CreateObject();
                 // Active False Team Select Panel
                 gameObject.SetActive(false);
             }

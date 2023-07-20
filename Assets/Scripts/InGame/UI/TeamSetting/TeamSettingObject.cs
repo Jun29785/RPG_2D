@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 using Define;
 
-public class TeamSettingObject : MonoBehaviour,IPointerClickHandler
+public class TeamSettingObject : MonoBehaviour
 {
     public UnitType type;
 
@@ -12,8 +12,8 @@ public class TeamSettingObject : MonoBehaviour,IPointerClickHandler
     [SerializeField] private TextMeshProUGUI nameTMP;
     [SerializeField] private TextMeshProUGUI fightScoreTMP;
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void UpdateUI()
     {
-        
-    }   
+        nameTMP.text = DataBaseManager.Instance.tdUnitDict[(int)type].Name;
+    }
 }
