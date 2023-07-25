@@ -12,9 +12,14 @@ public class StageManager : MonoBehaviour
     public float enemySpawnDelay;
     public bool isStarted;
 
+    [SerializeField] private List<EnemyBase> enemyBaseList;
+
+    [SerializeField] private Rect fieldRect;
+    [SerializeField] private float spawnRange;
+
     void Start()
     {
-
+        
     }
 
     void Update()
@@ -49,6 +54,24 @@ public class StageManager : MonoBehaviour
 
     void EnemySpawn()
     {
+        int enemy = Random.Range(0, appearEnemy.Count);
+        
+    }
 
+    float CalculateRandomPoint(float args1, float args2)
+    {
+        float result = float.PositiveInfinity;
+        int compare = args1.CompareTo(args2);
+        switch (compare)
+        {
+            case -1:
+            case 0:
+                result = Random.Range(args1 - spawnRange, args2 + spawnRange);
+                break;
+            case 1:
+                result = Random.Range(args2 - spawnRange, args1 + spawnRange);
+                break;
+        }
+        return result;
     }
 }
