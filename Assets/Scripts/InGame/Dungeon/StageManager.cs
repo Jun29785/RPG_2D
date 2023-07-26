@@ -8,14 +8,9 @@ public class StageManager : MonoBehaviour
     public int currentStage;
     public int allEnemyCount;
     public int currentEnemyCount;
-    public List<EnemyType> appearEnemy;
+    public EnemyType appearEnemy;
     public float enemySpawnDelay;
     public bool isStarted;
-
-    [SerializeField] private List<EnemyBase> enemyBaseList;
-
-    [SerializeField] private Rect fieldRect;
-    [SerializeField] private float spawnRange;
 
     void Start()
     {
@@ -52,26 +47,17 @@ public class StageManager : MonoBehaviour
         return;
     }
 
+    /// <summary>
+    /// Enemy Spawn Mechanism
+    /// 1. Get Enemy Type
+    /// 2. Get Enemy SpawnPoint
+    /// 3. Spawn & Initialize Stat
+    /// </summary>
     void EnemySpawn()
     {
-        int enemy = Random.Range(0, appearEnemy.Count);
-        
-    }
-
-    float CalculateRandomPoint(float args1, float args2)
-    {
-        float result = float.PositiveInfinity;
-        int compare = args1.CompareTo(args2);
-        switch (compare)
-        {
-            case -1:
-            case 0:
-                result = Random.Range(args1 - spawnRange, args2 + spawnRange);
-                break;
-            case 1:
-                result = Random.Range(args2 - spawnRange, args1 + spawnRange);
-                break;
-        }
-        return result;
+        int spawnEnemy = Random.Range(0, (int)appearEnemy);
+        //Instantiate(enemyList[spawnEnemy]).TryGetComponent<EnemyBase>(out EnemyBase enemy);
+        //enemy.transform.position = CalculateRandomPoint(spawnPoints[Random.Range(0, spawnPoints.Length)]);
+        InGameManager.Instance.enemyManager.SpawnEnemy((EnemyType)spawnEnemy);
     }
 }

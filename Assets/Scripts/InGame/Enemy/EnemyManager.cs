@@ -31,7 +31,10 @@ public class EnemyManager : MonoBehaviour
 
     void Update()
     {
-
+        if (Input.GetKey(KeyCode.Keypad0))
+        {
+            SpawnEnemy(EnemyType.Normal_1);
+        }
     }
 
     private void Initialize()
@@ -81,8 +84,7 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public GameObject SpawnEnemy(EnemyType type)
     {
-        GameObject enemy = Instantiate(enemyPrefabs[(int)type]);
-        enemy.transform.parent = enemyParent;
+        GameObject enemy = Instantiate(enemyPrefabs[(int)type],enemyParent);
         enemy.transform.position = GetSpawnPosition();
 
         return enemy;

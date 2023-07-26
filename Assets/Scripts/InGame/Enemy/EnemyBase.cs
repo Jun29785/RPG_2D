@@ -6,7 +6,8 @@ using Define;
 
 public class EnemyBase : MonoBehaviour
 {
-    private IObjectPool<EnemyBase> enemypool;
+    [SerializeField] protected EnemyType enemyType;
+
     [Header("Test")]
     public bool VisibleTargetRange;
     public bool VisibleAttackRange;
@@ -33,6 +34,7 @@ public class EnemyBase : MonoBehaviour
 
     void Start()
     {
+        detectUnitRange = int.MaxValue;
         unitLayer = LayerMask.NameToLayer("Unit");
         getDamage.AddListener(GetDamage);
         attackEvent.AddListener(AttackFunc);
@@ -96,11 +98,6 @@ public class EnemyBase : MonoBehaviour
         {
             return InGameManager.Instance.GetClosetTarget(colliders, transform);
         }
-    }
-
-    public void SetPool(IObjectPool<EnemyBase> pool)
-    {
-        enemypool = pool;
     }
 
     private void GetDamage(int damage, List<GameEffect> gameEffect, AttackKind kind)
