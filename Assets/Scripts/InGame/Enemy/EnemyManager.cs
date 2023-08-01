@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 using Define;
 
 public class EnemyManager : MonoBehaviour
@@ -31,7 +30,7 @@ public class EnemyManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.Keypad0))
+        if (Input.GetKeyDown(KeyCode.LeftBracket))
         {
             SpawnEnemy(EnemyType.Normal_1);
         }
@@ -61,13 +60,6 @@ public class EnemyManager : MonoBehaviour
     /// 적의 공격을 생성해주는 함수
     /// prefab : 생성할 오브젝트, enemy : 공격을 하는 적, target : 공격을 당하는 대상, speed : 오브젝트의 속도, damage : 주는 데미지, t : 오브젝트가 지속될 시간
     /// </summary>
-    /// <param name="prefab"></param>
-    /// <param name="enemy"></param>
-    /// <param name="target"></param>
-    /// <param name="speed"></param>
-    /// <param name="damage"></param>
-    /// <param name="t"></param>
-    /// <returns></returns>
     public GameObject EnemyAttack(GameObject prefab, Transform enemy, Transform target, float speed, int damage, float t)
     {
         Instantiate(prefab).TryGetComponent<EnemyAttack>(out EnemyAttack atk);

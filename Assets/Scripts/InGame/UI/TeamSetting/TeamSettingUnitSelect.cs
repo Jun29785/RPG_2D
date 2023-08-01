@@ -27,13 +27,7 @@ public class TeamSettingUnitSelect : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            GameManager.Instance.userDataManager.data.unlockedUnits[(int)UnitType.Bandit] = true;
-            GameManager.Instance.userDataManager.data.selectedUnits[(int)UnitType.Bandit] = true;
-            GameManager.Instance.userDataManager.data.unlockedUnits[(int)UnitType.Knight] = true;
-            GameManager.Instance.userDataManager.data.selectedUnits[(int)UnitType.Knight] = true;
-        }    
+     
     }
 
     private void OnEnable()

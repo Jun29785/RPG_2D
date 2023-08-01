@@ -13,7 +13,7 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {
-        
+        DataBaseManager.Instance.LoadTable();
     }
 
     void Update()
